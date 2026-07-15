@@ -18,17 +18,16 @@
 - `RTA`
 - `Spacer_Dep`
 
-## Search Order
+## Search Sequences
+
+The two methods used different split orders.
 
 ```text
-LDD
-→ RTA
-→ Source/Drain
-→ Spacer
-→ Fine split
+Method 1: LDD → RTA → Source/Drain → Spacer → Fine split
+Method 2: LDD → Source/Drain → RTA → Spacer → Fine split
 ```
 
-This sequence reduced the number of cases and made the role of each process variable easier to interpret.
+Both approaches narrowed the candidate set step by step. This reduced the number of simulations and made the effect of each process block easier to interpret.
 
 ## Two Selection Methods
 
@@ -50,4 +49,4 @@ The preferred region is the lower-right area.
 ![Optimization workflow](../figures/optimization_workflow.svg)
 
 **Summary:**  
-The strategy combines interpretable sequential splits with a multi-objective plot-based comparison.
+The strategy compares two sequential search methods: direct numerical selection and multi-objective `Ion/Ioff–SS` selection.
