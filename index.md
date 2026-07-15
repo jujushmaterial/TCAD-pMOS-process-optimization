@@ -1,325 +1,163 @@
 # P-type MOSFET Process Optimization using Sentaurus TCAD
 
-## 1. Project Overview
+## Project Overview
 
-기존 Sentaurus SimpleMOS nMOS 예제를 pMOS 공정으로 변환하고, 공정 변수에 따른 전기적 특성을 분석한 프로젝트입니다.
+기존 Sentaurus `SimpleMOS` nMOS 공정을 pMOS 공정으로 변환하고, 공정 parameter에 따른 성능 변화를 비교해 최종 조건을 선정한 프로젝트입니다.
 
-SProcess에서 well과 implant 극성을 변경하고, SDevice에서 pMOS 바이어스를 설정했습니다. SVisual에서는 pMOS 전류를 절대값으로 처리하고 `Ion`, `Ioff`, `SS`, `Vtgm`, `gm`을 자동 추출했습니다.
+단순히 전압의 부호만 바꾼 것이 아니라 다음 작업을 수행했습니다.
 
-최적화는 두 방식으로 진행했습니다.
-
-1. 개별 수치와 증감률 비교
-2. `Ion/Ioff–SS` 그래프 기반 후보 선택
-
-최종 소자는 높은 on/off 전류비와 낮은 SS를 함께 확보한 그래프 기반 조건으로 선정했습니다.
-
-> 코드 변경, 공정 흐름, 최적화 과정을 자세히 보고 싶다면 [13. Detailed Documents](#13-detailed-documents)에서 확인할 수 있습니다.
+- SProcess: NWell, BF2 LDD, BF2 Source/Drain, RTA, Spacer, TDR checkpoint 구성
+- SDevice: pMOS용 음전압 gate/drain sweep 구성
+- SVisual: pMOS 전류의 절대값 처리와 `Ion`, `Ioff`, `SS`, `Vtgm`, `gm` 자동 추출
+- Workbench: LDD, Source/Drain, RTA, Spacer split 비교
+- Optimization: 수치 비교와 `Ion/Ioff-SS` 그래프 비교
 
 **Summary:**  
-This project converts a SimpleMOS nMOS process into a pMOS flow and compares numerical and `Ion/Ioff–SS` plot-based optimization methods.
+This project implements and optimizes a planar pMOSFET by modifying the complete Sentaurus SProcess-SDevice-SVisual workflow.
 
 ---
 
-## 2. Project Information
+## Project Information
 
 | Item | Description |
 |---|---|
 | Course | Semiconductor Integrated Process |
-| Period | 2026.03–2026.06 |
+| Period | 2026.03-2026.06 |
 | Tool | Synopsys Sentaurus TCAD T-2022.03 |
 | Modules | Sentaurus Workbench, SProcess, SDevice, SVisual |
-| Device | Planar pMOSFET |
+| Device | Planar enhancement-mode pMOSFET |
 | Status | Completed |
 
 ---
 
-## 3. Problem Definition and Targets
+## Objective and Target
 
-공정 변수는 서로 영향을 주기 때문에 한 지표만 최대화하면 다른 특성이 악화될 수 있습니다.
+목표는 pMOS를 정상 동작시키는 것에서 끝나지 않고, 공정 조건을 조정해 on-state와 off-state 특성의 균형을 찾는 것이었습니다.
 
-- 높은 `Ion`: strong drive current
-- 낮은 `Ioff`: low leakage
-- 낮은 `SS`: sharp switching
-- 음의 `Vtgm`: normal pMOS behavior
-
-| Target | Criterion |
+| Metric | Target |
 |---|---:|
-| Ion at Vg = -2.5 V | `> 1e-5 A/µm` |
-| Ioff at Vg = 0 V | `< 1e-14 A/µm` |
+| Ion at Vg = -2.5 V | `> 1e-5 A/um` |
+| Ioff at Vg = 0 V | `< 1e-14 A/um` |
 | SS | `< 100 mV/dec` |
-| Vtgm | Negative |
+| Vtgm | Negative pMOS threshold |
 
 ---
 
-## 4. nMOS-to-pMOS Conversion
-
-| Item | SimpleMOS nMOS | Converted pMOS |
-|---|---|---|
-| Body | P-type | N-type |
-| Well dopant | Boron | Phosphorus |
-| LDD implant | Arsenic | BF2 |
-| Source/Drain implant | Phosphorus | BF2 |
-| Gate sweep | Positive | 0 to -2.5 V |
-| Drain bias | Positive | -0.05 and -1.0 V |
-| Current interpretation | Raw current | Absolute current |
-
-**Summary:**  
-The pMOS conversion required changes to well polarity, implant species, bias direction, and current processing.
-
----
-
-## 5. Sentaurus Workflow
-
-```text
-Sentaurus Workbench
-        ↓
-SProcess: pMOS process construction and TDR checkpoints
-        ↓
-SDevice: pMOS bias sweep and electrical simulation
-        ↓
-SVisual: metric extraction and DOE result comparison
-```
-
-Extracted metrics:
-
-- `Vtgm`
-- `Ion`
-- `Ioff`
-- `SS`
-- `gm`
-- `Vg0_actual`
-- `VgIon_actual`
-
----
-
-## 6. Process Flow Visualization
-
-![pMOS process flow](./figures/pmos_process_flow.svg)
-
-The structure was checked at thirteen points from NWell formation to the final contact-defined device.
-
-| Step | Process |
-|---:|---|
-| 1 | NWell formation |
-| 2 | Gate oxidation |
-| 3 | Poly deposition |
-| 4 | Gate patterning |
-| 5 | LDD implant |
-| 6 | Spacer deposition |
-| 7 | Spacer etch |
-| 8 | Source/Drain implant |
-| 9 | RTA |
-| 10 | Al deposition |
-| 11 | Al etch |
-| 12 | Reflect |
-| 13 | Contact definition and final device |
-
----
-
-## 7. pMOS Operation Verification
-
-The transfer curve was checked before optimization.
-
-- Current remained low near `Vg = 0 V`.
-- `|Id|` increased as the gate voltage became more negative.
-- Current at `Vd = -1.0 V` was larger than at `Vd = -0.05 V`.
-
-These results confirmed normal enhancement-mode pMOS operation.
-
----
-
-## 8. Optimization Strategy
-
-![Optimization workflow](./figures/optimization_workflow.svg)
-
-The two methods used different split orders.
-
-```text
-Method 1: LDD → RTA → Source/Drain → Spacer → Fine split
-Method 2: LDD → Source/Drain → RTA → Spacer → Fine split
-```
-
-| Method | Selection Basis |
-|---|---|
-| Method 1 | Direct comparison of Ion, Ioff, SS, and Vtgm |
-| Method 2 | Candidate position on the Ion/Ioff–SS plane |
-
-Both methods narrowed the candidate set step by step. This reduced the number of simulations and made the effect of each process block easier to interpret.
-
----
-
-## 9. Method 1 – Numerical Comparison
-
-Method 1 compared extracted values and percentage changes at each split.
-
-Selected condition:
-
-| Parameter | Value |
-|---|---:|
-| LDD_Dose | `7e13 cm⁻²` |
-| LDD_E | 7 keV |
-| SD_Dose | `4e16 cm⁻²` |
-| SD_E | 23 keV |
-| RTA | 5 s |
-| Spacer_Dep | 0.25 |
-
-| Metric | Result |
-|---|---:|
-| Ion | `1.474e-04 A/µm` |
-| Ioff | `1.547e-15 A/µm` |
-| SS | 85.660 mV/dec |
-| Vtgm | -1.0878 V |
-
-This method preserved high Ion, but the multi-metric trade-off was difficult to judge from separate values alone.
-
----
-
-## 10. Method 2 – Ion/Ioff–SS Selection
-
-Method 2 used the following comparison plane:
-
-```text
-x = Ion/Ioff
-y = SS
-```
-
-- Right: higher on/off current ratio
-- Down: lower SS
-- Preferred region: lower-right
-
-The final candidate was selected after LDD, Source/Drain, RTA, Spacer, and fine-split comparisons.
-
-Selected condition:
-
-| Parameter | Value |
-|---|---:|
-| LDD_Dose | `3e13 cm⁻²` |
-| LDD_E | 3 keV |
-| SD_Dose | `5e16 cm⁻²` |
-| SD_E | 10 keV |
-| RTA | 3 s |
-| Spacer_Dep | 0.30 |
-
-**Summary:**  
-Method 2 selected the device with the stronger combined Ion/Ioff and SS performance.
-
----
-
-## 11. Optimization Method Comparison
-
-![Method comparison](./figures/method_comparison.svg)
-
-| Metric | Numerical Method | Plot-Based Method |
-|---|---:|---:|
-| Ion | `1.474e-04` | `1.35e-04` |
-| Ioff | `1.547e-15` | `4.93e-16` |
-| SS | 85.660 | 85.181 |
-| gm | `1.044e-04` | `9.91e-05` |
-
-Compared with the numerical-method device, the plot-based device showed:
-
-- Ion: about 9.2% lower
-- gm: about 5.3% lower
-- Ioff: about 68.1% lower
-- SS: about 0.56% lower
-
-The plot-based condition was selected because the leakage reduction was large while Ion remained above the target.
-
----
-
-## 12. Final Device
+## Final Result
 
 | Parameter | Final Value |
 |---|---:|
 | Lg | 0.25 |
 | GOxTime | 10 |
-| NWell | `1e17 cm⁻³` |
-| LDD_Dose | `3e13 cm⁻²` |
-| LDD_E | 3 keV |
-| SD_Dose | `5e16 cm⁻²` |
-| SD_E | 10 keV |
+| NWell | `1e17 cm^-3` |
+| LDD_Dose / LDD_E | `3e13 cm^-2` / 3 keV |
+| SD_Dose / SD_E | `5e16 cm^-2` / 10 keV |
 | RTA | 3 s |
 | Spacer_Dep | 0.30 |
-| Vg | -2.5 V |
-| Vd | -1.0 V |
+| Vg / Vd | -2.5 V / -1.0 V |
 
-| Metric | Final Result | Target | Result |
+| Metric | Result | Target | Check |
 |---|---:|---:|---|
-| Ion | `1.35e-04 A/µm` | `> 1e-5` | Pass |
-| Ioff | `4.93e-16 A/µm` | `< 1e-14` | Pass |
+| Ion | `1.35e-04 A/um` | `> 1e-5` | Pass |
+| Ioff | `4.93e-16 A/um` | `< 1e-14` | Pass |
 | SS | 85.181 mV/dec | `< 100` | Pass |
-| Vtgm | -1.1421 V | pMOS | Pass |
+| Vtgm | -1.1421 V | Negative | Pass |
+| gm | `9.91e-05` | Reference | - |
+
+![Final comparison](./figures/actual/final_method_comparison.svg)
+
+수치 비교 방식에서 선택한 소자보다 Ion은 약 9.2% 낮았지만, Ioff는 약 68.1% 감소했고 SS도 약 0.56% 개선되었습니다. 따라서 최종 소자는 누설전류와 gate 제어성까지 고려한 그래프 기반 조건으로 선정했습니다.
 
 ---
 
-## 13. Detailed Documents
+## Process and Electrical Verification
 
-| Document | Description |
-|---|---|
-| [01. Project Overview](./docs/01_project_overview.md) | Scope and workflow |
-| [02. Preliminary Coursework](./docs/02_preliminary_coursework.md) | Early Sentaurus practice |
-| [03. nMOS-to-pMOS Conversion](./docs/03_nmos_to_pmos_conversion.md) | Conversion requirements |
-| [04. SProcess Modifications](./docs/04_sprocess_modifications.md) | Process command changes |
-| [05. SDevice Bias Setup](./docs/05_sdevice_bias_setup.md) | pMOS simulation setup |
-| [06. SVisual Metric Extraction](./docs/06_svisual_metric_extraction.md) | Metric extraction logic |
-| [07. Process Flow Visualization](./docs/07_process_flow_visualization.md) | TDR checkpoints |
-| [08. Optimization Targets and Strategy](./docs/08_optimization_targets_and_strategy.md) | Variables and targets |
-| [09. Method 1 – Numerical Optimization](./docs/09_method1_numerical_optimization.md) | Numerical selection |
-| [10. Method 2 – Ion/Ioff–SS Optimization](./docs/10_method2_ion_ioff_ss_optimization.md) | Plot-based selection |
-| [11. Method Comparison](./docs/11_optimization_method_comparison.md) | Final comparison |
-| [12. Final Device and Results](./docs/12_final_device_and_results.md) | Final condition |
-| [13. Limitations and Next Steps](./docs/13_limitations_and_next_steps.md) | Limitations |
+### 1. Thirteen Process Checkpoints
+
+![pMOS process flow](./figures/actual/pmos_process_flow.svg)
+
+NWell 형성부터 gate oxide, poly gate, LDD, spacer, p+ Source/Drain, RTA, Al 전극, reflect, contact 완성까지 구조를 확인했습니다.
+
+[공정 단계와 TDR command 자세히 보기](./guide/04_process_flow.md)
+
+### 2. pMOS Transfer Curve
+
+![pMOS transfer curve](./figures/actual/pmos_transfer_curve.svg)
+
+- Vg가 0 V에 가까울 때 current가 매우 작음
+- Vg가 음의 방향으로 증가할수록 `|Id|` 증가
+- Vd = -1.0 V에서 Vd = -0.05 V보다 큰 current 확인
+
+이를 통해 enhancement-mode pMOS의 정상 동작을 확인했습니다.
+
+[바이어스 구성과 검증 과정 보기](./guide/03_device_and_extraction.md)
 
 ---
 
-## 14. Report and Source Files
+## Code Modification Summary
 
-The public report will be uploaded later to:
+| Module | Main Modification | Detailed Page |
+|---|---|---|
+| SProcess | NWell, BF2 LDD/S-D, RTA, spacer parameterization | [Open](./guide/02_process_implementation.md) |
+| SDevice | Negative drain/gate bias and dense sweep step | [Open](./guide/03_device_and_extraction.md) |
+| SVisual | Absolute current, Ion/Ioff, actual Vg extraction | [Open](./guide/03_device_and_extraction.md) |
+| TDR | Thirteen process checkpoints | [Open](./guide/04_process_flow.md) |
+
+[전체 source code 목록](./src/README.md)
+
+---
+
+## Optimization Flow
+
+### Method 1: Numerical Comparison
 
 ```text
-report/pmos_process_optimization_report.pdf
+Baseline -> LDD -> RTA -> Source/Drain -> Spacer -> Fine Split x3
 ```
 
-The original Sentaurus command files are not included yet. The `src/` folder is reserved for the organized SProcess, SDevice, and SVisual files.
+각 단계에서 `Ion`, `Ioff`, `SS`, `Vtgm`과 변화율을 직접 비교했습니다. 최종 조건은 높은 Ion을 유지했지만, 여러 지표의 trade-off를 한눈에 판단하기 어려웠습니다.
 
----
+[Method 1 자세히 보기](./guide/05_numerical_optimization.md)
 
-## 15. Repository Structure
+### Method 2: Ion/Ioff-SS Plot
 
 ```text
-sentaurus-pmos-process-optimization/
-├── README.md
-├── index.md
-├── docs/
-├── figures/
-│   ├── pmos_process_flow.svg
-│   ├── optimization_workflow.svg
-│   └── method_comparison.svg
-├── results/
-│   └── final_results.csv
-├── report/
-│   └── README.md
-└── src/
-    └── README.md
+Baseline -> LDD -> Source/Drain -> RTA -> Spacer -> Fine Split
 ```
 
----
+- x-axis: `Ion/Ioff`, larger is better
+- y-axis: `SS`, smaller is better
+- preferred region: lower-right
 
-## 16. What I Learned
+![All split comparison](./figures/actual/all_split_comparison.svg)
 
-- pMOS process polarity conversion
-- Sentaurus SProcess, SDevice, and SVisual workflow
-- DOE-based parameter splitting
-- Automatic current and metric extraction
-- On-current, leakage, and SS trade-off analysis
-- Limits of sequential optimization
-- Value of multi-objective comparison
+[Method 2 자세히 보기](./guide/06_plot_optimization_and_final.md)
 
 ---
 
-## 17. Conclusion
+## Detailed Documents
 
-The project produced a working pMOS process and a final device that met all targets. The `Ion/Ioff–SS` method gave a clearer view of the trade-off than direct numerical comparison and selected the more balanced condition.
+| No. | Document | What You Can Check |
+|---:|---|---|
+| 00 | [Navigation](./guide/00_navigation.md) | 전체 문서와 code 위치 |
+| 01 | [Project Overview](./guide/01_project_overview.md) | 문제 정의와 전체 흐름 |
+| 02 | [Preliminary Coursework](./guide/01_project_overview.md) | 최종 과제 전 TCAD 실습 |
+| 03 | [nMOS-to-pMOS Conversion](./guide/02_process_implementation.md) | 극성, dopant, bias 변경 이유 |
+| 04 | [SProcess Modifications](./guide/02_process_implementation.md) | 실제 공정 command와 의미 |
+| 05 | [SDevice Bias Setup](./guide/03_device_and_extraction.md) | pMOS sweep 구성 |
+| 06 | [SVisual Metric Extraction](./guide/03_device_and_extraction.md) | 자동 추출 Tcl code |
+| 07 | [Process Flow Visualization](./guide/04_process_flow.md) | TDR 13단계 |
+| 08 | [Optimization Strategy](./guide/05_numerical_optimization.md) | target, parameter, 탐색 순서 |
+| 09 | [Method 1](./guide/05_numerical_optimization.md) | 수치 비교 최적화 |
+| 10 | [Method 2](./guide/06_plot_optimization_and_final.md) | 그래프 기반 최적화 |
+| 11 | [Method Comparison](./guide/06_plot_optimization_and_final.md) | 두 방법의 장단점과 결과 비교 |
+| 12 | [Final Device](./guide/06_plot_optimization_and_final.md) | 최종 조건과 target 검증 |
+| 13 | [Limitations](./guide/07_limitations.md) | 순차적 최적화 한계와 개선 방향 |
 
-**Summary:**  
-The final pMOS met the Ion, Ioff, SS, and Vtgm targets. Plot-based optimization provided the better overall device balance.
+---
+
+## Report and Repository
+
+- [Public Report](./report/pmos_process_optimization_report.pdf)
+- [GitHub Repository](https://github.com/jujushmaterial/sentaurus-pmos-process-optimization)
+- [Main Portfolio](https://jujushmaterial.github.io/)
