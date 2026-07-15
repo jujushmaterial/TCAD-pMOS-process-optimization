@@ -64,7 +64,7 @@ This project implements and optimizes a planar pMOSFET by modifying the complete
 | Vtgm | -1.1421 V | Negative | Pass |
 | gm | `9.91e-05` | Reference | - |
 
-![Final comparison](./figures/actual/final_method_comparison.svg)
+![Final comparison](./figures/actual/method2_optimization.svg)
 
 수치 비교 방식에서 선택한 소자보다 Ion은 약 9.2% 낮았지만, Ioff는 약 68.1% 감소했고 SS도 약 0.56% 개선되었습니다. 따라서 최종 소자는 누설전류와 gate 제어성까지 고려한 그래프 기반 조건으로 선정했습니다.
 
@@ -74,7 +74,7 @@ This project implements and optimizes a planar pMOSFET by modifying the complete
 
 ### 1. Thirteen Process Checkpoints
 
-![pMOS process flow](./figures/actual/pmos_process_flow.svg)
+![pMOS process flow](./figures/actual/project_overview.svg)
 
 NWell 형성부터 gate oxide, poly gate, LDD, spacer, p+ Source/Drain, RTA, Al 전극, reflect, contact 완성까지 구조를 확인했습니다.
 
@@ -82,7 +82,7 @@ NWell 형성부터 gate oxide, poly gate, LDD, spacer, p+ Source/Drain, RTA, Al 
 
 ### 2. pMOS Transfer Curve
 
-![pMOS transfer curve](./figures/actual/pmos_transfer_curve.svg)
+![pMOS transfer curve](./figures/actual/project_overview.svg)
 
 - Vg가 0 V에 가까울 때 current가 매우 작음
 - Vg가 음의 방향으로 증가할수록 `|Id|` 증가
@@ -103,7 +103,7 @@ NWell 형성부터 gate oxide, poly gate, LDD, spacer, p+ Source/Drain, RTA, Al 
 | SVisual | Absolute current, Ion/Ioff, actual Vg extraction | [Open](./guide/03_device_and_extraction.md) |
 | TDR | Thirteen process checkpoints | [Open](./guide/04_process_flow.md) |
 
-[전체 source code 목록](./src/README.md)
+[전체 source code 목록](./source/README.md)
 
 ---
 
@@ -129,7 +129,7 @@ Baseline -> LDD -> Source/Drain -> RTA -> Spacer -> Fine Split
 - y-axis: `SS`, smaller is better
 - preferred region: lower-right
 
-![All split comparison](./figures/actual/all_split_comparison.svg)
+![All split comparison](./figures/actual/method2_optimization.svg)
 
 [Method 2 자세히 보기](./guide/06_plot_optimization_and_final.md)
 
