@@ -132,22 +132,19 @@ These results confirmed normal enhancement-mode pMOS operation.
 
 ![Optimization workflow](./figures/optimization_workflow.svg)
 
-The process variables were evaluated in this order:
+The two methods used different split orders.
 
 ```text
-Baseline verification
-→ LDD_Dose and LDD_E
-→ RTA
-→ SD_Dose and SD_E
-→ Spacer_Dep
-→ Fine split
-→ Final method comparison
+Method 1: LDD → RTA → Source/Drain → Spacer → Fine split
+Method 2: LDD → Source/Drain → RTA → Spacer → Fine split
 ```
 
 | Method | Selection Basis |
 |---|---|
 | Method 1 | Direct comparison of Ion, Ioff, SS, and Vtgm |
 | Method 2 | Candidate position on the Ion/Ioff–SS plane |
+
+Both methods narrowed the candidate set step by step. This reduced the number of simulations and made the effect of each process block easier to interpret.
 
 ---
 
@@ -183,14 +180,14 @@ Method 2 used the following comparison plane:
 
 ```text
 x = Ion/Ioff
- y = SS
+y = SS
 ```
 
 - Right: higher on/off current ratio
 - Down: lower SS
 - Preferred region: lower-right
 
-The final candidate was selected after LDD, S/D, RTA, spacer, and fine-split comparisons.
+The final candidate was selected after LDD, Source/Drain, RTA, Spacer, and fine-split comparisons.
 
 Selected condition:
 
