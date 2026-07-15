@@ -1,13 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="500" viewBox="0 0 1100 500">
-  <style>.t{font:700 28px Arial,sans-serif;fill:#172033}.h{font:700 18px Arial,sans-serif;fill:#172033}.b{font:15px Arial,sans-serif;fill:#334155}.box{fill:#f8fafc;stroke:#64748b;stroke-width:2;rx:14}.blue{fill:#eef4ff;stroke:#275efe}.green{fill:#edfdf4;stroke:#159447}.arrow{stroke:#64748b;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
+  <style>.t{font:700 28px Arial,sans-serif;fill:#172033}.h{font:700 18px Arial,sans-serif;fill:#172033}.b{font:15px Arial,sans-serif;fill:#334155}.box{fill:#f8fafc;stroke:#64748b;stroke-width:2}.blue{fill:#eef4ff;stroke:#275efe;stroke-width:2}.green{fill:#edfdf4;stroke:#159447;stroke-width:2}.arrow{stroke:#64748b;stroke-width:3;fill:none;marker-end:url(#a)}</style>
   <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker></defs>
   <text x="550" y="38" text-anchor="middle" class="t">Optimization Workflow</text>
-  <rect class="box" x="400" y="70" width="300" height="70"/><text x="550" y="100" text-anchor="middle" class="h">Baseline pMOS Verification</text><text x="550" y="124" text-anchor="middle" class="b">Bias, transfer curve, metric extraction</text>
-  <path class="arrow" d="M550 140 V185"/>
-  <rect class="box" x="400" y="185" width="300" height="70"/><text x="550" y="215" text-anchor="middle" class="h">Sequential DOE Splits</text><text x="550" y="239" text-anchor="middle" class="b">LDD → RTA → S/D → Spacer → Fine split</text>
-  <path class="arrow" d="M550 255 V300"/><path class="arrow" d="M550 300 H285 V325"/><path class="arrow" d="M550 300 H815 V325"/>
-  <rect class="blue" x="105" y="325" width="360" height="105" rx="14"/><text x="285" y="358" text-anchor="middle" class="h">Method 1: Numerical Comparison</text><text x="285" y="384" text-anchor="middle" class="b">Compare Ion, Ioff, SS, Vtgm</text><text x="285" y="408" text-anchor="middle" class="b">Select by value and percentage change</text>
-  <rect class="green" x="635" y="325" width="360" height="105" rx="14"/><text x="815" y="358" text-anchor="middle" class="h">Method 2: Ion/Ioff–SS Selection</text><text x="815" y="384" text-anchor="middle" class="b">x = Ion/Ioff, y = SS</text><text x="815" y="408" text-anchor="middle" class="b">Prefer the lower-right candidate region</text>
-  <path class="arrow" d="M285 430 V465 H530"/><path class="arrow" d="M815 430 V465 H570"/>
-  <text x="550" y="488" text-anchor="middle" class="h">Final Device Comparison and Target Verification</text>
+  <rect class="box" x="400" y="70" width="300" height="70" rx="14"/><text x="550" y="100" text-anchor="middle" class="h">Baseline pMOS Verification</text><text x="550" y="124" text-anchor="middle" class="b">Bias, transfer curve, metric extraction</text>
+  <path class="arrow" d="M550 140 V195"/><path class="arrow" d="M550 195 H285 V225"/><path class="arrow" d="M550 195 H815 V225"/>
+  <rect class="blue" x="90" y="225" width="390" height="160" rx="14"/><text x="285" y="260" text-anchor="middle" class="h">Method 1: Numerical Comparison</text><text x="285" y="294" text-anchor="middle" class="b">LDD → RTA → S/D → Spacer → Fine split</text><text x="285" y="326" text-anchor="middle" class="b">Compare Ion, Ioff, SS, and Vtgm</text><text x="285" y="352" text-anchor="middle" class="b">Select by value and percentage change</text>
+  <rect class="green" x="620" y="225" width="390" height="160" rx="14"/><text x="815" y="260" text-anchor="middle" class="h">Method 2: Ion/Ioff–SS Selection</text><text x="815" y="294" text-anchor="middle" class="b">LDD → S/D → RTA → Spacer → Fine split</text><text x="815" y="326" text-anchor="middle" class="b">x = Ion/Ioff, y = SS</text><text x="815" y="352" text-anchor="middle" class="b">Prefer the lower-right candidate region</text>
+  <path class="arrow" d="M285 385 V450 H530"/><path class="arrow" d="M815 385 V450 H570"/>
+  <rect class="box" x="365" y="450" width="370" height="70" rx="14"/><text x="550" y="480" text-anchor="middle" class="h">Final Device Comparison</text><text x="550" y="505" text-anchor="middle" class="b">Target verification and balanced-device selection</text>
 </svg>
