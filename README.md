@@ -51,7 +51,7 @@ This project converts a Sentaurus SimpleMOS nMOS example into a pMOS process and
 
 | Page | Description |
 |---|---|
-| [Project Page](https://jujushmaterial.github.io/sentaurus-pmos-process-optimization/) | 프로젝트 목적, 구현 내용, 최종 결과를 한눈에 확인 |
+| [Project Page](https://jujushmaterial.github.io/TCAD-pMOS-process-optimization/) | 프로젝트 목적, 구현 내용, 최종 결과를 한눈에 확인 |
 | [Detailed Navigation](./guide/00_navigation.md) | 모든 과정 문서와 source code 안내 |
 | [Preliminary Coursework](./guide/02_preliminary_coursework.md) | 최종 과제 전 TCAD 실습 |
 | [nMOS-to-pMOS Conversion](./guide/03_nmos_to_pmos_conversion.md) | 구조, dopant, bias 변경 이유 |
@@ -84,7 +84,7 @@ This project converts a Sentaurus SimpleMOS nMOS example into a pMOS process and
 ## Repository Structure
 
 ```text
-sentaurus-pmos-process-optimization/
+TCAD-pMOS-process-optimization/
 ├── README.md
 ├── index.md
 ├── guide/
