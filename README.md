@@ -1,4 +1,4 @@
-# P-type MOSFET Process Optimization using Sentaurus TCAD
+# TCAD pMOS Process Optimization
 
 기존 Sentaurus `SimpleMOS` nMOS 예제를 **pMOS 공정으로 변환**하고, LDD, Source/Drain, RTA, Spacer 조건을 조정해 전기적 특성을 최적화한 프로젝트입니다.
 
