@@ -1,4 +1,4 @@
-# P-type MOSFET Process Optimization using Sentaurus TCAD
+# TCAD pMOS Process Optimization
 
 ## Project Overview
 
