@@ -38,7 +38,7 @@ Vg = -2.5 V
 
 ## Operation Verification
 
-![Transfer curve](../figures/actual/project_overview.svg)
+![Transfer curve](../figures/actual/project_overview.jpg)
 
 - 음의 gate voltage 증가에 따라 `|Id|` 증가
 - 높은 drain bias에서 더 큰 current
