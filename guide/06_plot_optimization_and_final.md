@@ -13,7 +13,7 @@
 
 ## 1. LDD Split
 
-![LDD scatter selection](../figures/actual/method2_optimization.svg)
+![LDD scatter selection](../figures/actual/method2_optimization.jpg)
 
 낮은 LDD_Dose는 Ion이 약간 감소했지만 Ioff가 더 크게 억제되어 `Ion/Ioff`가 증가하는 경우가 있었습니다. 그래프에서 우수한 위치를 보인 낮은 dose/energy 후보를 다음 단계로 전달했습니다.
 
@@ -30,7 +30,7 @@ SD_Dose = 1e16, 3e16, 5e16
 SD_E    = 10, 15, 20 keV
 ```
 
-![Source/Drain scatter selection](../figures/actual/method2_optimization.svg)
+![Source/Drain scatter selection](../figures/actual/method2_optimization.jpg)
 
 - 높은 dose는 Source/Drain resistance 감소에 유리
 - 높은 energy는 junction depth와 leakage를 증가시킬 수 있음
@@ -38,13 +38,13 @@ SD_E    = 10, 15, 20 keV
 
 ## 3. RTA Split
 
-![RTA scatter selection](../figures/actual/method2_optimization.svg)
+![RTA scatter selection](../figures/actual/method2_optimization.jpg)
 
 RTA 3, 5, 7 s를 비교한 결과, RTA보다 Source/Drain dose/energy 조합의 영향이 더 크게 나타났습니다. 낮은 dose를 RTA 증가만으로 보완하기는 어려웠고, 높은 energy와 긴 RTA 조합은 diffusion과 leakage에 불리할 수 있었습니다.
 
 ## 4. Spacer Split
 
-![Spacer scatter selection](../figures/actual/method2_optimization.svg)
+![Spacer scatter selection](../figures/actual/method2_optimization.jpg)
 
 `Spacer_Dep = 0.30-0.35` 영역에서 leakage 억제와 series resistance 사이의 균형이 상대적으로 우수했습니다.
 
@@ -58,7 +58,7 @@ Spacer_Dep = 0.325
 
 기존 우수 후보 주변에 중간값을 추가해 비교했습니다.
 
-![Fine split selection](../figures/actual/method2_optimization.svg)
+![Fine split selection](../figures/actual/method2_optimization.jpg)
 
 점들이 다음 두 그룹으로 나뉘었습니다.
 
@@ -103,7 +103,7 @@ The plot-based method restored candidates discarded by the numerical method and 
 | SS | 85.660 | 85.181 | plot method 약 0.56% 낮음 |
 | gm | `1.044e-04` | `9.91e-05` | plot method 약 5.3% 낮음 |
 
-![Final method comparison](../figures/actual/method2_optimization.svg)
+![Final method comparison](../figures/actual/method2_optimization.jpg)
 
 ## Interpretation
 
@@ -160,9 +160,9 @@ The plot-based candidate was selected because its substantial leakage reduction 
 
 ## Verification Images
 
-![pMOS transfer curve](../figures/actual/project_overview.svg)
+![pMOS transfer curve](../figures/actual/project_overview.jpg)
 
-![All split comparison](../figures/actual/method2_optimization.svg)
+![All split comparison](../figures/actual/method2_optimization.jpg)
 
 ## Result Meaning
 
